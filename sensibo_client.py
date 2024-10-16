@@ -34,22 +34,3 @@ class SensiboClientAPI(object):
     def pod_change_ac_state(self, podUid, currentAcState, propertyToChange, newValue):
         self._patch("/pods/%s/acStates/%s" % (podUid, propertyToChange),
                 json.dumps({'currentAcState': currentAcState, 'newValue': newValue}))
-
-if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description='Sensibo client example parser')
-    parser.add_argument('apikey', type = str)
-    parser.add_argument('deviceName', type = str)
-    args = parser.parse_args()
-
-    client = SensiboClientAPI(args.apikey)
-    devices = client.devices()
-    print "-" * 10, "devices", "-" * 10
-    print devices
-
-    uid = devices[args.deviceName]
-    ac_state = client.pod_ac_state(uid)
-    print "-" * 10, "AC State of %s" % args.deviceName, "_" * 10
-    print ac_state
-
-    client.pod_change_ac_state(uid, ac_state, "on", not ac_state['on']) 
